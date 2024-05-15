@@ -1,0 +1,34 @@
+.message {
+    max-width: 400px;
+    min-width: 200px;
+    position: relative;
+    padding: 10px 12px 35px 12px;
+    border-radius: 20px !important;
+    margin-bottom: 20px;
+}
+.message:last-child {
+    margin-bottom: 0px;
+}
+.message.right {
+    text-align: right;
+    justify-content: end !important;
+    background-color: #DFFD52;
+    align-self: flex-end;
+}
+.message.left {
+    text-align: left;
+    justify-content: start !important;
+    background-color: #5D27F4;
+    color: #FFF;
+    align-self: flex-start;
+}
+.message .time {
+    position: absolute;
+    bottom: 10px;
+}
+.message.right .time {
+    right: 10px;
+}
+.message.left .time {
+    left: 10px;
+}

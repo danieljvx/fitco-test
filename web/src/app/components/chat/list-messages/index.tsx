@@ -12,7 +12,7 @@ const userTemp = {
 
 const guestTemp = {
   id: 1,
-  fullname: "Chat GPT",
+  fullname: "FitCo GPT",
   avatar: "",
   tokenAuth: "",
   socketId: "",
@@ -21,7 +21,7 @@ const guestTemp = {
 
 export default function ListMessages() {
   return (
-    <ListGroup as="ol" numbered>
+    <ListGroup as="ol" className="messages">
       <Message
         right
         user={userTemp}

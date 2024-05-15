@@ -6,7 +6,7 @@ import "./index.css";
 export default function Chat() {
   return (
     <Card className="chat my-5 mx-auto">
-      <Card.Header as="h5">ChatGPT</Card.Header>
+      <Card.Header as="h5">FitCo</Card.Header>
       <Card.Body>
         <ListMessages />
       </Card.Body>

@@ -4,6 +4,7 @@ import { IUser } from "../types/user.type";
 import { ITheme } from "../types/theme.type";
 import moment from "moment";
 import classNames from "classnames";
+import "./style.css";
 
 type Props = {
   user: IUser;
@@ -31,7 +32,7 @@ const Message: FC<Props> = ({
   const [textWriterCount, setTextWriterCount] = useState(0);
   const [textParse, setTextParse] = useState("");
   const [textWriter, setTextWriter] = useState("");
-  const [idTimeout, setIdTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [idTimeout, setIdTimeout] = useState<string | null>(null);
 
   const getTime = (time: string): string => {
     moment.locale("es");
@@ -48,7 +49,7 @@ const Message: FC<Props> = ({
       setTextWriterCount(textWriterCount + 1);
       if (idTimeout === null) {
         const id = setTimeout(typeWriter, 5000);
-        setIdTimeout(id);
+        setIdTimeout(id + "");
       }
       setListScrollToDown();
     } else if (idTimeout) {
@@ -74,15 +75,13 @@ const Message: FC<Props> = ({
     <ListGroup.Item
       as="li"
       key={text}
-      className={classNames(
-        "d-flex justify-content-between align-items-start",
-        {
-          ["right"]: right,
-        }
-      )}
+      className={classNames("message d-flex justify-content-between", {
+        ["right align-items-end"]: right,
+        ["left align-items-start"]: left,
+      })}
     >
-      <div className="ms-2 me-auto">
-        <div className="fw-bold user">{user.fullname}</div>
+      <div className="">
+        <div className="fw-bold user">{right ? user.fullname : guest.fullname}</div>
         <span
           className={classNames("text", {
             ["left"]: left,
