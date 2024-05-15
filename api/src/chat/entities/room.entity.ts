@@ -6,8 +6,17 @@ export class RoomEntitiy {
   id: number;
 
   @Column()
-  createdAt: Date;
+  name: string;
 
   @Column()
+  status: number;
+
+  @Column('user_id')
+  userId: number;
+
+  @Column('created_at')
+  createdAt: Date;
+
+  @Column('updated_at')
   updatedAt: Date;
 }

@@ -8,12 +8,11 @@ import { ChatModule } from './chat/chat.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: '0.0.0.0',
       port: 3306,
       username: 'root',
-      password: 'admin123',
-      database: 'mysql_nestjs',
-      entities: [],
+      password: '123qwe',
+      database: 'fitco_chat',
       synchronize: true,
     }),
     ChatModule,

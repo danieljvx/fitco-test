@@ -1,0 +1,9 @@
+.idea
+.env
+.DS_Store
+db/data/*
+test.env
+cover.*
+gin-bin
+test.*
+docs

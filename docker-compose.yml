@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: db/Dockerfile
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123qwe
+      MYSQL_DATABASE: fitco_chat
+    # sync folders. MySQL data is stored outside container so that rebuilding doesn't clear db.
+    # folder is at workspace root.
+    volumes:
+      - ./db/data:/var/lib/mysql:rw
+      - ./db/fitco.sql:/tmp/fitco.sql
+      - ./db/import.sh:/tmp/import.sh
+      - ./db:/docker-entrypoint-initdb.d
+    #  - ./mysql/fitco.sql:/docker-entrypoint-initdb.d/fitco.sql
+    user: mysql
+    networks:
+      - fitco
+  api:
+    build:
+      context: api
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    links:
+      - db
+    depends_on:
+      - db
+    networks:
+      - fitco
+  web:
+    build:
+      context: web
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    links:
+      - api
+    depends_on:
+      - api
+    networks:
+      - fitco
+networks:
+  fitco:

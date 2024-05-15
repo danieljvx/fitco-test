@@ -6,8 +6,20 @@ export class MessageEntitiy {
   id: number;
 
   @Column()
-  createdAt: Date;
+  text: string;
 
   @Column()
+  status: number;
+
+  @Column('user_id')
+  userId: number;
+
+  @Column('room_id')
+  roomId: number;
+
+  @Column('created_at')
+  createdAt: Date;
+
+  @Column('updated_at')
   updatedAt: Date;
 }

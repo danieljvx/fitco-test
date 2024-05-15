@@ -5,15 +5,18 @@ export class UserEntitiy {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
-  @Column({ unique: true })
-  username: string;
+  @Column()
+  fullname: string;
 
   @Column()
-  password: string;
+  email: string;
 
   @Column()
+  image: string;
+
+  @Column('created_at')
   createdAt: Date;
 
-  @Column({ nullable: true })
-  authStrategy: string;
+  @Column('updated_at')
+  updatedAt: Date;
 }
