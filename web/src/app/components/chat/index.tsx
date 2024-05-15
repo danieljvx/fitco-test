@@ -1,7 +1,7 @@
-import { Card } from "react-bootstrap";
+import { Card, Spinner } from "react-bootstrap";
 import SendMessage from "./send-message/index";
 import ListMessages from "./list-messages/index";
-import "./index.css";
+import "./style.css";
 import { IMessage } from "./types/message.type";
 import { useState } from "react";
 import { measureMemory } from "vm";
@@ -13,6 +13,7 @@ const userTemp = {
   tokenAuth: "",
   socketId: "",
   temp: false,
+  guest: false,
 };
 
 const guestTemp = {
@@ -22,6 +23,7 @@ const guestTemp = {
   tokenAuth: "",
   socketId: "",
   temp: false,
+  guest: true,
 };
 
 const messagesMock: IMessage[] = [
@@ -67,6 +69,9 @@ export default function Chat() {
       <Card.Header as="h5">FitCo</Card.Header>
       <Card.Body>
         <ListMessages messages={messages || []} />
+        <div className="container-writing">
+          <Spinner animation="grow" size="sm" />
+        </div>
       </Card.Body>
       <Card.Footer className="text-muted">
         <SendMessage sendMessage={sendMessage} />

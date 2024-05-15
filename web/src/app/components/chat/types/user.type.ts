@@ -5,4 +5,5 @@ export interface IUser {
   tokenAuth: string;
   socketId: string;
   temp: boolean;
+  guest: boolean;
 }

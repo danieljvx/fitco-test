@@ -5,6 +5,7 @@
   padding: 10px 12px 35px 12px;
   border-radius: 20px !important;
   margin-bottom: 20px;
+  margin-right: 10px;
 }
 .message:last-child {
   margin-bottom: 0px;

@@ -2,3 +2,8 @@
   height: calc(100vh - 250px);
   overflow-y: auto;
 }
+@media (max-width: 480px) {
+  .messages {
+    height: calc(100vh - 150px);
+  }
+}

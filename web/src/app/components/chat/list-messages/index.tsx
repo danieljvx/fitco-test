@@ -14,7 +14,8 @@ const ListMessages: FC<Props> = ({ messages }) => {
       {messages.map((message, i) => (
         <Message
           key={`message-${i}-${message.user.id}`}
-          right
+          right={!message.user.guest}
+          left={message.user.guest}
           user={message.user}
           guest={message.user}
           text={message.message}
