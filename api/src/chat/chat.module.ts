@@ -12,7 +12,7 @@ import { ChatGateway } from './chat.gateway';
   imports: [
     TypeOrmModule.forFeature([RoomEntitiy, UserEntitiy, MessageEntitiy]),
     ChatGptModule.forRoot(
-      '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',
+      'sk-proj-O5geZoMe2pJv6IChH1cET3BlbkFJwkZGGgkAPtRh1gmy1KID',
     ),
   ],
   controllers: [ChatController],

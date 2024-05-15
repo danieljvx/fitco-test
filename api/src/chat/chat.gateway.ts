@@ -60,7 +60,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     if (room) {
       room.messages.push(payload);
       this.server.to(room.id).emit('chat', payload, (err, resp) => {
-        console.log('emit chat HOST', { err, resp });
+        console.log('emit chat HOST');
       });
       console.log('room.id', room.id);
       if (room.guest.id === FitCoUser.id) {
@@ -69,44 +69,33 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
           prompt: payload.message,
         });
         console.log('respChatGpt', respChatGpt);
-        console.log(
-          'respChatGpt.choices[0].message.content',
-          respChatGpt.choices[0].message.content,
-        );
-        const rooms = await this.chatService.getRooms();
-        console.log('room.id.', room.id);
-        console.log(
-          'this.server.sockets.fetchSockets',
-          await this.server.sockets.fetchSockets(),
-        );
-        console.log('rooms', rooms);
-        // const products = await this.chatService.getSearchProducts();
-        const messageGpt: IMessage = {
-          user: FitCoUser,
-          message: respChatGpt.choices[0].message.content,
-          time: new Date(),
-          roomId: room.id,
-        };
-        room.messages.push(messageGpt);
-        this.server
-          .to(room.id)
-          .timeout(2000)
-          .emit('chat', messageGpt, (err, resp) => {
-            console.log('emit chat GUEST', { err, resp });
-          });
-        /*
-        console.log('room.messages', room.messages);
-        const dataWsChatGpt = {
-          pais: 'COLOMBIA',
-          mascota: '',
-          nomb_categ: '',
-          room_id: room.id,
-          first_connection: false,
-          texto: payload.message,
-          messages: room.messages,
-        };
-        this.chatService.sendMessageWsChatGptService(dataWsChatGpt);
-          */
+        if (respChatGpt && respChatGpt?.choices) {
+          console.log(
+            'respChatGpt.choices[0].message.content',
+            respChatGpt.choices[0].message.content,
+          );
+          const rooms = await this.chatService.getRooms();
+          console.log('room.id.', room.id);
+          console.log(
+            'this.server.sockets.fetchSockets',
+            await this.server.sockets.fetchSockets(),
+          );
+          console.log('rooms', rooms);
+          // const products = await this.chatService.getSearchProducts();
+          const messageGpt: IMessage = {
+            user: FitCoUser,
+            message: respChatGpt.choices[0].message.content,
+            time: new Date(),
+            roomId: room.id,
+          };
+          room.messages.push(messageGpt);
+          this.server
+            .to(room.id)
+            .timeout(2000)
+            .emit('chat', messageGpt, (err, resp) => {
+              console.log('emit chat GUEST', { err, resp });
+            });
+        }
       }
     }
     return payload;

@@ -10,21 +10,25 @@ export class ChatGptService {
     this.apiKey = apiKey;
   }
   async generateTextGPT3({ prompt }: CreateChatgptDto) {
-    return this.generateText({ prompt, model: 'gpt-3.5-turbo-16k' });
+    return this.generateText({ prompt, model: 'gpt-3.5-turbo' });
   }
   async generateText({ prompt, model }: CreateChatgptDto) {
+    console.log('generateText', {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.apiKey}`,
+    });
     try {
       const response = await axios.post<ChatGptResponse>(
         'https://api.openai.com/v1/chat/completions',
         {
           model,
           messages: [{ role: 'user', content: prompt }],
-          // temperature: 0,
+          temperature: 0.7,
         },
         {
           headers: {
             'Content-Type': 'application/json',
-            authorization: `Bearer ${this.apiKey}`,
+            Authorization: `Bearer ${this.apiKey}`,
           },
         },
       );
@@ -32,7 +36,6 @@ export class ChatGptService {
       return response.data;
     } catch (error: any) {
       console.log('error:', error);
-      throw new HttpException('Falha ao gerar texto', error.response.status);
     }
   }
 }
