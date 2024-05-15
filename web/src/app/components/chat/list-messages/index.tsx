@@ -1,47 +1,30 @@
 import { Badge, ListGroup } from "react-bootstrap";
 import Message from "../message/index";
+import { IMessage } from "../types/message.type";
+import { FC } from "react";
+import "./style.css";
 
-const userTemp = {
-  id: 1,
-  fullname: "Daniel Villanueva",
-  avatar: "",
-  tokenAuth: "",
-  socketId: "",
-  temp: false,
+type Props = {
+  messages: IMessage[];
 };
 
-const guestTemp = {
-  id: 1,
-  fullname: "FitCo GPT",
-  avatar: "",
-  tokenAuth: "",
-  socketId: "",
-  temp: false,
-};
-
-export default function ListMessages() {
+const ListMessages: FC<Props> = ({ messages }) => {
   return (
     <ListGroup as="ol" className="messages">
-      <Message
-        right
-        user={userTemp}
-        guest={guestTemp}
-        text={"Hola"}
-        time={"12-12-2024"}
-        theme={"dark"}
-        isWSConnectedIn={false}
-        setListScrollToDown={function (): void {}}
-      />
-      <Message
-        left
-        user={userTemp}
-        guest={guestTemp}
-        text={"Hola, Como estas?"}
-        time={"12-12-2024"}
-        theme={"dark"}
-        isWSConnectedIn={false}
-        setListScrollToDown={function (): void {}}
-      />
+      {messages.map((message, i) => (
+        <Message
+          key={`message-${i}-${message.user.id}`}
+          right
+          user={message.user}
+          guest={message.user}
+          text={message.message}
+          time={message.time}
+          theme={"dark"}
+          isWSConnectedIn={false}
+          setListScrollToDown={function (): void {}}
+        />
+      ))}
     </ListGroup>
   );
-}
+};
+export default ListMessages;

@@ -10,7 +10,7 @@ type Props = {
   user: IUser;
   guest: IUser;
   text: string;
-  time: string;
+  time: Date;
   left?: boolean;
   right?: boolean;
   theme: ITheme;
@@ -92,7 +92,7 @@ const Message: FC<Props> = ({
         </span>
       </div>
       <Badge className="time" bg="primary" pill>
-        {getTime(time)}
+        {getTime(time.toDateString())}
       </Badge>
     </ListGroup.Item>
   );
