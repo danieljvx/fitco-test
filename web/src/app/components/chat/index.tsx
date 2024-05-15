@@ -4,6 +4,7 @@ import ListMessages from "./list-messages/index";
 import "./index.css";
 import { IMessage } from "./types/message.type";
 import { useState } from "react";
+import { measureMemory } from "vm";
 
 const userTemp = {
   id: 1,
@@ -43,15 +44,22 @@ export default function Chat() {
   const [messages, setMessages] = useState<IMessage[]>(messagesMock);
 
   const sendMessage = (text: string): void => {
+    console.log("sendMessage", text);
+    const msgs: IMessage[] = [];
     const msg: IMessage = {
       user: userTemp,
       time: new Date(),
       message: text,
       roomId: "1",
     };
-    messagesMock.push(msg);
-    console.log("messagesMock", messagesMock);
-    setMessages(messagesMock);
+    if (messages.length) {
+      for (let m = 0; m < messages.length; m += 1) {
+        msgs.push(messages[m]);
+      }
+    }
+    msgs.push(msg);
+    console.log("msgs", msgs);
+    setMessages(msgs);
   };
 
   return (

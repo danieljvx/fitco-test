@@ -33,11 +33,7 @@ const SendMessage: FC<Props> = ({ sendMessage }) => {
           value={text}
           onChange={onInputText}
         />
-        <Button
-          type="submit"
-          onClick={onSendMessage}
-          variant="outline-secondary"
-        >
+        <Button type="submit" variant="outline-secondary">
           Enviar
         </Button>
       </InputGroup>
