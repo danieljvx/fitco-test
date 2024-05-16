@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 import { isSession } from "./components/chat/core/session";
-import styles from "./page.module.css";
 import Register from "./components/chat/register";
 
 export default function Home() {

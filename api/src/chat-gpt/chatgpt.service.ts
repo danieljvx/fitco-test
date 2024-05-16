@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { CreateChatgptDto } from './dto/create-chatgpt.dto';
 import { ChatGptResponse } from './dto/response-chatgpt.dto';
@@ -13,10 +13,6 @@ export class ChatGptService {
     return this.generateText({ prompt, model: 'gpt-3.5-turbo' });
   }
   async generateText({ prompt, model }: CreateChatgptDto) {
-    console.log('generateText', {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${this.apiKey}`,
-    });
     try {
       const response = await axios.post<ChatGptResponse>(
         'https://api.openai.com/v1/chat/completions',

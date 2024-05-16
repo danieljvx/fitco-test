@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS `fitco_chat`.`users`;
-DROP TABLE IF EXISTS `fitco_chat`.`rooms`;
 DROP TABLE IF EXISTS `fitco_chat`.`messages`;
+DROP TABLE IF EXISTS `fitco_chat`.`rooms`;
+DROP TABLE IF EXISTS `fitco_chat`.`users`;
 
 CREATE TABLE `fitco_chat`.`users` (
     `id`            INT(10) NOT NULL AUTO_INCREMENT,

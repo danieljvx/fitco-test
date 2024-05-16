@@ -19,7 +19,7 @@ import { useRouter } from "next/navigation";
 export default function Chat() {
   const router = useRouter();
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const socket = useSocket("http://localhost:4000", false);
+  const socket = useSocket(`${process.env.NEXT_PUBLIC_API_URL || ""}`, false);
   const [wsConnected, setWSConnected] = useState(false);
   const [wsConnectedLoading, setWSConnectedLoading] = useState(true);
   const [userData, setUserData] = useState<IUser | null>(getSession());
