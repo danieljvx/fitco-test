@@ -9,6 +9,20 @@
   justify-content: center;
 }
 
+.chat .on-connect {
+  width: 30px;
+  height: 30px;
+}
+
+.chat .card-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chat .card-header .out {
+  align-self: flex-end;
+}
+
 @media (max-width: 480px) {
   .chat {
     margin: 0 !important;

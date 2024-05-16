@@ -32,7 +32,6 @@ export class ChatGptService {
           },
         },
       );
-      console.log('response', response);
       return response.data;
     } catch (error: any) {
       console.log('error:', error);

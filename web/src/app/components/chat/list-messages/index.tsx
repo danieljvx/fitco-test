@@ -1,7 +1,7 @@
-import { Badge, ListGroup } from "react-bootstrap";
+import { ListGroup } from "react-bootstrap";
 import Message from "../message/index";
 import { IMessage } from "../types/message.type";
-import { FC } from "react";
+import { FC, useRef } from "react";
 import "./style.css";
 
 type Props = {
@@ -9,8 +9,15 @@ type Props = {
 };
 
 const ListMessages: FC<Props> = ({ messages }) => {
+  const listMessagesRef = useRef<HTMLOListElement>(null);
+  const setListScrollToDown = () => {
+    if (listMessagesRef.current) {
+      listMessagesRef.current.scrollTop = listMessagesRef.current.scrollHeight;
+    }
+  };
+
   return (
-    <ListGroup as="ol" className="messages">
+    <ListGroup ref={listMessagesRef} as="ol" className="messages">
       {messages.map((message, i) => (
         <Message
           key={`message-${i}-${message.user.id}`}
@@ -19,10 +26,8 @@ const ListMessages: FC<Props> = ({ messages }) => {
           user={message.user}
           guest={message.user}
           text={message.message}
-          time={message.time}
-          theme={"dark"}
-          isWSConnectedIn={false}
-          setListScrollToDown={function (): void {}}
+          time={message.time.toString()}
+          setListScrollToDown={setListScrollToDown}
         />
       ))}
     </ListGroup>

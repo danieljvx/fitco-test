@@ -10,11 +10,9 @@ type Props = {
   user: IUser;
   guest: IUser;
   text: string;
-  time: Date;
+  time: string;
   left?: boolean;
   right?: boolean;
-  theme: ITheme;
-  isWSConnectedIn: boolean;
   setListScrollToDown: () => void;
 };
 
@@ -25,8 +23,6 @@ const Message: FC<Props> = ({
   time,
   left,
   right,
-  theme,
-  isWSConnectedIn,
   setListScrollToDown,
 }) => {
   const [textWriterCount, setTextWriterCount] = useState(0);
@@ -91,8 +87,8 @@ const Message: FC<Props> = ({
           <div dangerouslySetInnerHTML={{ __html: textWriter }} />
         </span>
       </div>
-      <Badge className="time" bg="primary" pill>
-        {getTime(time.toDateString())}
+      <Badge className="time" bg="secondary" pill>
+        {getTime(time)}
       </Badge>
     </ListGroup.Item>
   );

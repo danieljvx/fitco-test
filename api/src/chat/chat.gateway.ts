@@ -53,35 +53,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody()
     payload: IMessage,
   ): Promise<IMessage> {
-    console.log('chat payload.roomId', payload.roomId);
-    console.log('chat getRooms', await this.chatService.getRooms());
     const room = await this.chatService.getRoom(payload.roomId);
-    console.log('chat room', room);
     if (room) {
       room.messages.push(payload);
-      this.server.to(room.id).emit('chat', payload, (err, resp) => {
-        console.log('emit chat HOST');
-      });
-      console.log('room.id', room.id);
+      this.server.to(room.id).emit('chat', payload);
       if (room.guest.id === FitCoUser.id) {
         this.server.to(room.id).emit('writing', true);
         const respChatGpt = await this.chatGptService.generateTextGPT3({
           prompt: payload.message,
         });
-        console.log('respChatGpt', respChatGpt);
         if (respChatGpt && respChatGpt?.choices) {
-          console.log(
-            'respChatGpt.choices[0].message.content',
-            respChatGpt.choices[0].message.content,
-          );
-          const rooms = await this.chatService.getRooms();
-          console.log('room.id.', room.id);
-          console.log(
-            'this.server.sockets.fetchSockets',
-            await this.server.sockets.fetchSockets(),
-          );
-          console.log('rooms', rooms);
-          // const products = await this.chatService.getSearchProducts();
           const messageGpt: IMessage = {
             user: FitCoUser,
             message: respChatGpt.choices[0].message.content,
@@ -89,12 +70,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
             roomId: room.id,
           };
           room.messages.push(messageGpt);
-          this.server
-            .to(room.id)
-            .timeout(2000)
-            .emit('chat', messageGpt, (err, resp) => {
-              console.log('emit chat GUEST', { err, resp });
-            });
+          this.server.to(room.id).timeout(2000).emit('chat', messageGpt);
+          this.server.to(room.id).emit('writing', false);
         }
       }
     }
@@ -113,22 +90,17 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       const guest = payload?.guest
         ? payload.guest
         : { ...FitCoUser, ...{ socketId: payload.host.socketId } };
-      console.log('host', payload.host);
-      console.log('guest', guest);
       const { isExistRoom, roomId } =
         await this.chatService.getIsRoomByHostIdGuestId(
           payload.host.id,
           guest.id,
         );
-      console.log('isExistRoom', isExistRoom);
       if (!payload?.guest && isExistRoom) {
         const room = await this.chatService.getRoom(roomId);
-        console.log(room);
         this.server.in(payload.host.socketId).socketsJoin(roomId);
         this.server.in(roomId).emit('join_room', room);
       } else {
         const roomId = uuidv4();
-        console.log(`${payload.host.socketId} is joining ${roomId}`);
         this.server.in(payload.host.socketId).socketsJoin(roomId);
         const room = await this.chatService.addRoom(
           roomId,
@@ -136,33 +108,21 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
           guest,
         );
         this.server.in(roomId).emit('join_room', room);
-        const messageGpt: IMessage = {
-          user: FitCoUser,
-          message: 'Hola, ¿cómo podemos ayudarte?',
-          time: new Date(),
-          roomId: room.id,
-        };
-        room.messages.push(messageGpt);
-        this.server
-          .to(room.id)
-          .timeout(2000)
-          .emit('chat', messageGpt, (err, resp) => {
-            console.log('emit chat GUEST', { err, resp });
-          });
-        /*
-        const dataWsChatGpt = {
-          pais: 'COLOMBIA',
-          mascota: '',
-          nomb_categ: '',
-          room_id: room.id,
-          first_connection: true,
-          texto: payload.host.temp
-            ? 'hola'
-            : `hola, me llamo ${payload.host.fullname}`,
-          messages: [],
-        };
-        this.chatService.sendMessageWsChatGptService(dataWsChatGpt);
-        */
+        this.server.to(room.id).emit('writing', true);
+        const respChatGpt = await this.chatGptService.generateTextGPT3({
+          prompt: `Hola, me llamo ${payload.host.fullname}`,
+        });
+        if (respChatGpt && respChatGpt?.choices) {
+          const messageGpt: IMessage = {
+            user: FitCoUser,
+            message: respChatGpt.choices[0].message.content,
+            time: new Date(),
+            roomId: room.id,
+          };
+          room.messages.push(messageGpt);
+          this.server.to(room.id).timeout(2000).emit('chat', messageGpt);
+          this.server.to(room.id).emit('writing', false);
+        }
       }
     }
   }
